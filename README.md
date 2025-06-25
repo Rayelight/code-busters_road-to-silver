@@ -39,8 +39,10 @@ This project automates the ingestion of Binance data using its public API and pr
 │   │       │   └── <layer_name>.txt             # Requirement text files that define layers
 │   │       └── build_layer.py                # Script to package Lambda layers
 │   ├── glue/                           # Module for AWS Glue configuration
-│   └── sqs/                            # Module for SQS queue setup
-└── terrafom.sh                            # Bash script to automate setup and deployment
+│   ├── sqs/                            # Module for SQS queue setup
+│   └── terrafom.sh                     # Bash script to automate setup and deployment
+├── request_ingestion.py                # Python program to send messages to the sqs queue to trigger the lambda
+└── requirements.txt                    # Project python requirements to run the python codes
 ```
 
 Each Lambda function is defined by its own folder under `lambda_code/`, containing a `handler.py` file.  
