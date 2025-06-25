@@ -23,7 +23,8 @@ resource "aws_iam_policy" "lambda_s3_access" {
             {
                 Effect = "Allow"
                 Action = [
-                    "s3:PutObject"
+                    "s3:PutObject",
+                    "s3:PutObjectAcl"
                 ]
                 Resource = "arn:aws:s3:::${var.bucket_name}/*"
             }
@@ -77,6 +78,9 @@ resource "aws_lambda_function" "this" {
     filename = var.package_path
     source_code_hash = filebase64sha256(var.package_path)
 
+    layers = [for k, v in aws_lambda_layer_version.layers: v.arn]
+    publish = false
+
     environment {
         variables = {
             BUCKET_NAME = var.bucket_name
@@ -95,4 +99,12 @@ resource "aws_lambda_event_source_mapping" "sqs_trigger" {
     event_source_arn = var.sqs_arn
     function_name    = aws_lambda_function.this.arn
     batch_size       = 1
+}
+
+
+resource "aws_lambda_layer_version" "layers" {
+    for_each = toset(var.lambda_layers)
+    filename   = "${path.module}/lambda_layer/output/${each.key}_layer.zip"
+    layer_name = each.key
+    compatible_runtimes = ["python3.11"]
 }

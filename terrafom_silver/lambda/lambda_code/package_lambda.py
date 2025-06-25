@@ -5,7 +5,7 @@ import os, shutil, subprocess, zipfile
 SCRIPT_DIR = Path(__file__).parent.resolve()
 
 
-def clean(build_dir, package_dir, zip_file):
+def clean(build_dir: Path, package_dir: Path, zip_file: Path):
     print("🧹 Cleaning build directories...")
     shutil.rmtree(build_dir, ignore_errors=True)
     package_dir.mkdir(exist_ok=True)
@@ -14,7 +14,7 @@ def clean(build_dir, package_dir, zip_file):
         zip_file.unlink(missing_ok=True)
 
 
-def install_dependencies(req_file, build_dir):
+def install_dependencies(req_file: Path, build_dir: Path):
     if req_file.exists():
         print("📦 Installing dependencies...")
         subprocess.check_call(["pip", "install", "-r", str(req_file), "-t", str(build_dir)])
@@ -22,7 +22,7 @@ def install_dependencies(req_file, build_dir):
         print("⚠️ No requirements.txt found — skipping dependencies.")
 
 
-def copy_source(build_dir, code_dir):
+def copy_source(build_dir: Path, code_dir: Path):
     print("📁 Copying source files...")
     build_dir.mkdir(parents=True, exist_ok=True)
 
@@ -30,7 +30,7 @@ def copy_source(build_dir, code_dir):
         shutil.copy(py_file, build_dir / py_file.name)
 
 
-def zip_build(zip_file, build_dir):
+def zip_build(zip_file: Path, build_dir: Path):
     print(f"🗜️ Creating zip at {zip_file}...")
     with zipfile.ZipFile(zip_file, 'w', zipfile.ZIP_DEFLATED) as zf:
         for path in build_dir.rglob('*'):
@@ -38,7 +38,7 @@ def zip_build(zip_file, build_dir):
             zf.write(path, archive_name)
 
 
-def build_lambda_package(lambda_dir):
+def build_lambda_package(lambda_dir: Path):
     build_dir = lambda_dir / "build"
     package_dir = lambda_dir / "package"
     zip_file = package_dir / "lambda.zip"
@@ -54,7 +54,7 @@ def build_lambda_package(lambda_dir):
 
 def main():
     for lambda_dir in SCRIPT_DIR.iterdir():
-        if (lambda_dir / "lambda_function").is_dir() and not lambda_dir.endswith("_old"):
+        if (lambda_dir / "lambda_function").is_dir() and not lambda_dir.name.endswith("_old"):
             build_lambda_package(lambda_dir)
 
 

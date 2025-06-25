@@ -21,5 +21,9 @@ variable "package_path" {
 variable "sqs_arn" {
     type        = string
     description = "ARN of the SQS queue connected to this Lambda"
+}
 
+variable "lambda_layers" {
+    type        = list(string)
+    description = "List of Lambda Layers to build"
 }

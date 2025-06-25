@@ -1,13 +1,3 @@
-variable "AWS_ACCESS_KEY" {
-    type      = string
-    sensitive = true
-}
-
-variable "AWS_SECRET_KEY" {
-    type      = string
-    sensitive = true
-}
-
 variable "AWS_REGION" {
     type    = string
     default = "eu-west-3"
@@ -20,12 +10,25 @@ variable "environment" {
 }
 
 variable "extra_buckets" {
-  type        = list(string)
-  description = "Liste de buckets S3 simples (non liés aux lambdas)"
-  default     = []
+    type = list(string)
+    description = "Liste de buckets S3 simples (non liés aux lambdas)"
+    default = []
 }
 
 variable "lambdas" {
-  type        = map(string)
-  description = "Map des lambdas et des noms de buckets associés"
+    type = map(string)
+    description = "Map des lambdas et des noms de buckets associés"
+}
+
+variable "glue_tables" {
+    type = map(object({
+        columns = list(object({
+            name = string
+            type = string
+        }))
+        partitions = list(object({
+            name = string
+            type = string
+        }))
+    }))
 }
