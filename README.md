@@ -103,5 +103,7 @@ pip install -r requirements.txt
 
 ## Demo
 
-Two demonstration videos are included in the repository to showcase setup and usage.
+Two demonstration videos are included in the repository to showcase setup and usage:
+* [Final Demo](https://drive.google.com/file/d/1rIIckXCEVtiDnq2Gtg9cAS-QEY_rjsFD/view?usp=sharing)
+* [Sound problem Demo](https://drive.google.com/file/d/1pzYa5yELhiTp-3AIGtcpEiHPz1iDMz7B/view?usp=sharing)
 
